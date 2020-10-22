@@ -7,7 +7,6 @@ import Loading from './Loading';
 import Weather from './Weather';
 
 const API_KEY = '6939111834468c454bd21e07b6b11a64';
-// http://api.openweathermap.org/data/2.5/weather?lat=37.4968989&lon=126.8458408&appid=6939111834468c454bd21e07b6b11a64
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
