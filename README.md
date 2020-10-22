@@ -1,7 +1,7 @@
 # fokin-weather
 Weather App
 
-# [Stack]
+# [Tech Stack]
 ### - React Native
 ### - Expo
 
