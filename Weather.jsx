@@ -16,7 +16,7 @@ const weatherOptions = {
     Haze: { iconName: 'weather-hail', gradient: ['#89F7FE', '#66A6FF'], title: 'title', subtitle: 'subtitle' },
 }
 
-export default function Weather({ temp, condition }) {
+export default function Weather({ weather, condition }) {
     return (
         <LinearGradient
             // Background Linear Gradient
@@ -30,18 +30,17 @@ export default function Weather({ temp, condition }) {
                     name={weatherOptions[condition].iconName}
                     color="white"
                 />
-                <Text style={styles.temp}>{temp}</Text>
+                <Text style={styles.temp}>{weather.temp}</Text>
             </View>
             <View style={{ ...styles.halfContainer, ...styles.textContainer }}>
-                <Text style={styles.title}>{weatherOptions[condition].title}</Text>
-                <Text style={styles.subtitle}>{weatherOptions[condition].subtitle}</Text>
+                <Text style={styles.title}>{weather.location}</Text>
             </View>
         </LinearGradient>
     )
 }
 
 Weather.propTypes = {
-    temp: PropTypes.number.isRequired,
+    weather: PropTypes.object.isRequired,
     condition: PropTypes.oneOf([
         'Thunderstorm',
         'Drizzle',

@@ -1,9 +1,5 @@
-# This is a basic workflow to help you get started with Actions
+name: Master CI/CD
 
-name: CI
-
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 on:
   push:
     branches: [ master ]
@@ -13,13 +9,32 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout master
-        uses: actions/checkout@master
+    strategy:
+      matrix:
+        node-version: [12.x]
 
-      - name: NPM install
-        run: npm install
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: superant96/fokin-weather
+          ref: master
+
+      - name: Expo Build Web
+        uses: expo/expo-github-action@v5
+        with:
+          expo-version: 3.x
+      - run: yarn install
+      - run: expo build:web
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: S3 Deploy
+        run: aws s3 sync ./web-build s3://superant
       
-      - name: Hello World Log
-        run: echo Hello, world!
-        
+      - name: Invalidate CloudFront
+        run: aws cloudfront create-invalidation --distribution-id E3S2XQDVXY5HAJ --paths / /index.html

@@ -15,9 +15,13 @@ export default function App() {
   useEffect(() => {
     (async () => {
       try {
-
         await Location.requestPermissionsAsync();
+
+        // 위도, 경도 가져오기
         const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({});
+
+        await Location.setGoogleApiKey('AIzaSyBO4pj4wnpQEJ7rPMWTm-mW_PIugbV0GZc');
+        const result = await Location.reverseGeocodeAsync({ latitude: latitude, longitude: longitude }, {});
 
         // send weather api
         const {
@@ -26,7 +30,9 @@ export default function App() {
             weather
           }
         } = await axios.get(`http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`);
+
         setWeather({
+          location: result[1].name,
           temp: Math.round(temp),
           condition: weather[0].main
         });
@@ -36,14 +42,16 @@ export default function App() {
       }
     })();
   }, []);
-
+  console.log('---------- start -----------');
+  console.log(weather);
+  console.log('----------  end  ------------');
   return (
     isLoading
       ?
       <Loading />
       :
       <Weather
-        temp={weather.temp}
+        weather={weather}
         condition={weather.condition}
       />
   );
