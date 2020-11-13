@@ -32,7 +32,7 @@ export default function App() {
         } = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`);
 
         setWeather({
-          location: result[1].name,
+          location: result[0].district,
           temp: Math.round(temp),
           condition: weather[0].main
         });
@@ -42,9 +42,11 @@ export default function App() {
       }
     })();
   }, []);
-  console.log('---------- start -----------');
-  console.log(weather);
-  console.log('----------  end  ------------');
+
+  console.log('1111');
+  Alert.alert("Can't find you.", "So sad");
+  console.log('2222');
+
   return (
     isLoading
       ?
