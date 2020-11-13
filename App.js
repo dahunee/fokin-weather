@@ -44,6 +44,7 @@ export default function App() {
   }, []);
 
   console.log('1111');
+  alert('Cant find you.');
   Alert.alert("Can't find you.", "So sad");
   console.log('2222');
 
